@@ -1,5 +1,18 @@
 import java.util.Scanner;
 
+/*
+4 orange
+7 apple
+3 grape
+9 dragon
+6 peaches
+1 watermelon
+10 onion
+14 kiwi
+5 singhara
+2 plum
+done
+ */
 public class Example1 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -62,7 +75,7 @@ public class Example1 {
 
 
         if (nodeToReplace != null) {
-            int newKey = 5;
+            int newKey = 15;
             System.out.println("Replace key of entry : Key => " +nodeToReplace.key+" with new Key => "+ newKey );
             int oldKey = queue.replaceKey(nodeToReplace, newKey);
 
@@ -76,7 +89,7 @@ public class Example1 {
     static private void removeValueCall(SmarterPQ queue){
 
 
-        int key = 5;
+        int key = 15;
         Tree.Node nodeToReplace2 = queue.findNodeByKey(key);
         if (nodeToReplace2 != null) {
             Object newValue = "xxx";
