@@ -1,0 +1,189 @@
+
+   1. toggle(): Transforms min to max priority queue and vice versa
+      PseudoCode :
+         Input : Null
+         Output : Transformed Priority Queue
+
+         isMaxHeap <- !isMaxHeap
+         HeapUp(node)
+
+         HeapUp(node):
+              if node is null then
+                    return
+              heapUp(node.left)
+              heapUp(node.right)
+              heapify(current node)
+
+      Time Complexity : O(1) + O(n) ~   O(n)
+
+
+   2. removeTop(): removes and returns the top element of the priority Queue
+      PseudoCode :
+               Input : Null
+               Output : Returns removed top element
+               removeTop():
+                   if tree is empty:
+                       return null
+
+                   curTop <- getTop()
+                   tempNode <- new Node(curTop.key, curTop.data)
+
+                   toRemove <- tree.root
+                   deleteNode(tree.root, tree.root)
+                   decrease tree size by 1
+
+                   re-heapify to adjust tree
+
+                   return tempNode
+
+
+
+   3. remove(e): removes the specified entry (key,value) pair from the Queue
+      PseudoCode :
+          Input: entry
+          Output: Deleted entry
+
+          if entry is null:
+              return null
+
+          parent = findParentNode(tree.root, entry)
+          if parent is null:
+              return null
+
+          if entry is the left child of parent:
+              set parent's left child to null
+          else:
+              set parent's right child to null
+
+          decrease size of the tree by 1
+
+          restore heap property by  heapifySubtree(tree.root)
+
+          return entry
+
+      Time Complexity: Worst-case O(n)  , Best-case O(log n)
+
+
+   4. insert(k,v): which is a key(k), value(v) pair to the priority queue, and returns the corresponding entry object in the priority queue.
+      PseudoCode :
+           Input: key and value
+           Output: Entry inserted in the priority queue at correct position
+
+           insert(key, data)
+               if root is null then
+                   New node creation with key and data, set it as the root
+                   return
+               end if
+
+               node = root
+
+               while true do
+                   if node's left child is null then
+                       Create a new node with key and data, set it as the left child of node
+                       break
+                   else if node's right child is null then
+                       Create a new node with key and data, set it as the right child of node
+                       Set the parent of the right child node to node
+                       break
+                   else
+                       if node's left child has at least one null child then
+                           Move to the left child of node
+                       else
+                           Move to the right child of node
+                       end if
+                   end if
+               end while
+
+               while node is not null do
+                   heapify operation on node
+                   Move to the parent of node
+               end while
+
+
+   5.top(): returns the top entry
+    PseudoCode :
+              Input: Null
+              Output: returns top entry of max/min priority Queue
+
+              Node root <- tree.root
+              returns root
+
+
+    6.state(): returns the state of the queue
+        PseudoCode :
+                  Input: Null
+                  Output: returns Max or Min state
+
+                  if tree <- isMaxHeap
+                       return Max Heap
+                  else
+                       return Min Heap
+
+
+    7.size(): returns the size of queue
+        PseudoCode :
+                  Input: Null
+                  Output: returns number of elements in the queue
+
+                  return tree size
+
+
+    8.isEmpty(): method to check if the queue is empty
+        PseudoCode :
+                  Input: Null
+                  Output: returns boolean if queue is empty or not
+
+                  if size <- 0
+                      return true
+                  return false
+
+
+
+    9.replaceKey(e, k): replace entry e’s key to k and return the old key.
+        PseudoCode :
+                  Input: entry and new key value
+                  Output: returns old key value
+
+                  replaceKey(entry, newKey)
+                      if entry is null then
+                          return -1
+                      end if
+
+                      oldKey <- entry.key
+                      nodeReplaced <- replaceKeyHelper(root, oldKey, newKey)
+
+                      if nodeReplaced is not null then
+                          do heapifySubtree  on the root node
+                      end if
+
+                      return oldKey
+
+
+        Time Complexity: Searching and replacing takes O(n)
+
+
+    10.replaceValue(e, v): replace entry e’s value to new value and return the old value.
+        PseudoCode :
+                  Input: entry and new value
+                  Output: returns old value
+
+                  replaceValue(node, key, newValue):
+                      if node is null:
+                          return null
+
+                      if node.key equals key:
+                          oldValue <- node.data
+                          node.data <- newValue
+                          return oldValue
+
+                      leftResult <- replaceValue(node.left, key, newValue)
+                      if leftResult is not null:
+                          return leftResult
+
+                      return replaceValue(node.right, key, newValue)
+
+
+
+        Time Complexity: Worst-time O(n)  Avg-time O(n) for balanced BT
+
+

@@ -5,16 +5,17 @@
  * Due Date: 14th April 2024
  */
 
-class Tree{
+class Tree {
 
     // Inner Node class to define Tree Structure
-    class Node{
+    static class Node {
         int key;
         Object data;
         Node left;
         Node right;
         Node parent;
-        Node(int key,Object data){
+
+        Node(int key, Object data) {
             this.key = key;
             this.data = data;
         }
@@ -23,15 +24,17 @@ class Tree{
     Node root;
     int size;
     boolean isMaxHeap;
-    Tree(boolean isMaxHeap){
+
+    Tree(boolean isMaxHeap) {
         this.isMaxHeap = isMaxHeap;
     }
 
     /**
      * Method to min-heapify or max-heapify based on the type
+     *
      * @param node of the tree
      */
-    void heapify(Node node){
+    void heapify(Node node) {
         if (node == null) return;
 
         Node extremeVal = node;
@@ -58,21 +61,22 @@ class Tree{
     /**
      * Method to insert key, value pairs in the tree
      * and running heapify to re-adjust the heap  (whether max-heap / min-heap)
+     *
      * @param key
      * @param data
      */
     void insert(int key, Object data) {
         if (root == null) {
-            root = new Node(key,data);
+            root = new Node(key, data);
             return;
         }
         Node node = root;
         while (true) {
             if (node.left == null) {
-                node.left = new Node(key,data);
+                node.left = new Node(key, data);
                 break;
             } else if (node.right == null) {
-                node.right = new Node(key,data);
+                node.right = new Node(key, data);
                 node.right.parent = node;
                 break;
             } else {
@@ -90,29 +94,8 @@ class Tree{
     }
 
     /**
-     * Method to delete Node from the tree
-     * and running heapify to re-adjust the heap  (whether max-heap / min-heap)
-     * @param node
-     * @return deleted Node
-     */
-    public Node delete(Node node) {
-        if (node == null) {
-            return node;
-        }
-        Node lastNode = findLastNode();
-        node.key = lastNode.key;
-        node.data = lastNode.data;
-        if (lastNode.parent.left == lastNode) {
-            lastNode.parent.left = null;
-        } else {
-            lastNode.parent.right = null;
-        }
-        heapify(node);
-        return node;
-    }
-
-    /**
      * Method to find the last Node in the tree which can be replaced with the deleted node.
+     *
      * @return last Node
      */
     public Node findLastNode() {
@@ -132,6 +115,7 @@ class Tree{
 
     /**
      * Method to display the Tree Elements as inserted in the Priority Queue
+     *
      * @param node
      */
     void display(Node node) {
@@ -150,55 +134,60 @@ class Tree{
 /**
  * Smart Priority Queue class implementation
  */
-class SmarterPQ{
+class SmarterPQ {
     Tree tree;
 
     /**
      * Constructor of SmarterPQ class taking heap type as the parameter
+     *
      * @param isMaxHeap
      */
-    SmarterPQ(boolean isMaxHeap){
+    SmarterPQ(boolean isMaxHeap) {
         tree = new Tree(isMaxHeap);
     }
 
     /**
      * Method to insert key value pairs in the priority queue
-     * @param key of type int
+     *
+     * @param key  of type int
      * @param data of type Object(allows any type )
      */
-    void insert(int key, Object data){
-        tree.insert(key,data);
+    void insert(int key, Object data) {
+        tree.insert(key, data);
         tree.size++;
     }
 
     /**
      * Method to return the size of smart priority queue
+     *
      * @return Size of queue
      */
-    int getSize(){
+    int size() {
         return tree.size;
     }
 
     /**
      * Checks whether the priority queue is empty
+     *
      * @return boolean value
      */
-    boolean isEmpty(){
+    boolean isEmpty() {
         return tree.size == 0;
     }
 
     /**
      * Checks the state if it is a Max Heap or a Min Heap
+     *
      * @return string about the state
      */
-    String getState(){
+    String state() {
         return tree.isMaxHeap ? "Max Heap" : "Min Heap";
     }
 
     /**
      * It uses the display function to display the tree
      */
-    void display(){
+    void display() {
         tree.display(tree.root);
     }
 
@@ -212,6 +201,7 @@ class SmarterPQ{
 
     /**
      * Method that starts from the leaves and heapify each subtree bottom-up
+     *
      * @param node
      */
     void heapUp(Tree.Node node) {
@@ -227,23 +217,93 @@ class SmarterPQ{
 
     /**
      * Method to remove the top element of the priority queue
+     *
      * @return the removed element
      */
-    Tree.Node removeTop(){
-        Tree.Node top = tree.delete(tree.root);
-        return top;
+    Tree.Node removeTop() {
+        Tree.Node curTop = getTop();
+        Tree.Node tempNode = new Tree.Node(curTop.key, curTop.data);
+
+        Tree.Node toRemove = tree.root;
+        deleteNode(tree.root, tree.root);
+        tree.size--;
+        tree.heapify(toRemove);
+        return tempNode;
+    }
+
+    /**
+     * Function to remove given entry from the priority Queue
+     *
+     * @param entry key,value pair
+     * @return delete entry
+     */
+    Tree.Node remove(Tree.Node entry) {
+        Tree.Node toRemove = tree.root;
+        deleteNode(tree.root, entry);
+        tree.size--;
+        tree.heapify(toRemove);
+        return toRemove;
+    }
+
+    /**
+     * Method to delete the Node of tree
+     *
+     * @param root  of the Tree
+     * @param entry to delete
+     * @return deleted entry
+     */
+    public Tree.Node deleteNode(Tree.Node root, Tree.Node entry) {
+
+        if (root == null) {
+            return null;
+        }
+        root.right = deleteNode(root.right, entry);
+        root.left = deleteNode(root.left, entry);
+
+        if (root.key == entry.key) {
+            if (root.left == null && root.right == null) {
+                return null;
+            }
+            if (root.left == null) {
+                return root.right;
+            } else if (root.right == null) {
+                return root.left;
+            }
+
+            Tree.Node IS = findInOrderSuccessor(root.right);
+            root.key = IS.key;
+
+            root.right = deleteNode(root.right, IS);
+        }
+
+        return root;
+    }
+
+    /**
+     * Method to search successor of the root node
+     *
+     * @param root
+     * @return the successor of root
+     */
+    private Tree.Node findInOrderSuccessor(Tree.Node root) {
+        while (root.left != null) {
+            root = root.left;
+        }
+        return root;
     }
 
     /**
      * Method to return the top element of the priority queue
+     *
      * @return the top element
      */
-    Tree.Node getTop(){
+    Tree.Node getTop() {
         return tree.root;
     }
 
     /**
      * Method to replace the key of the provided entry with the new key
+     *
      * @param entry
      * @param newKey
      * @return old key
@@ -261,6 +321,7 @@ class SmarterPQ{
 
     /**
      * Method to find the node with the given key
+     *
      * @param key
      * @return node with the respected key
      */
@@ -270,6 +331,7 @@ class SmarterPQ{
 
     /**
      * Method to find the node with the given key
+     *
      * @param node
      * @param key
      * @return node with the respected key
@@ -290,6 +352,7 @@ class SmarterPQ{
 
     /**
      * Method to replace the data value of the provided entry with the new data value
+     *
      * @param entry
      * @param newValue
      * @return old value
@@ -301,6 +364,7 @@ class SmarterPQ{
 
     /**
      * Method to replace the data value of the provided entry with the new data value
+     *
      * @param node
      * @param key
      * @param newValue
@@ -324,6 +388,7 @@ class SmarterPQ{
 
     /**
      * Method to heapify left and right subtree
+     *
      * @param node
      */
     void heapifySubtree(Tree.Node node) {
@@ -335,6 +400,7 @@ class SmarterPQ{
 
     /**
      * Helper method to replace the key
+     *
      * @param node
      * @param oldKey
      * @param newKey
@@ -354,49 +420,5 @@ class SmarterPQ{
         return replaceKeyHelper(node.right, oldKey, newKey);
     }
 
-    /**
-     * Method to remove the node from priority queue based on the entry node
-     * @param entry
-     * @return the removed node
-     */
-    Tree.Node remove(Tree.Node entry) {
-        if (entry == null) return null;
-
-        Tree.Node parent = findParentNode(tree.root, entry);
-        if (parent == null) return null;
-
-        if (parent.left == entry) {
-            parent.left = null;
-        } else {
-            parent.right = null;
-        }
-
-        tree.size--;
-
-        // Restore heap
-        heapifySubtree(tree.root);
-
-        return entry;
-    }
-
-    /**
-     * Method to find the parent of given entry of the priority queue
-     * @param node
-     * @param entry
-     * @return the parent node
-     */
-    private Tree.Node findParentNode(Tree.Node node, Tree.Node entry) {
-        if (node == null){
-            return null;
-        }
-        if (node.left == entry || node.right == entry){
-            return node;
-        }
-        Tree.Node leftResult = findParentNode(node.left, entry);
-        if (leftResult != null){
-            return leftResult;
-        }
-        return findParentNode(node.right, entry);
-    }
 
 }
