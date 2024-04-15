@@ -14,7 +14,7 @@ import java.util.Scanner;
 done
  */
 
-public class Example3 {
+public class Example4 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         SmarterPQ queue = new SmarterPQ(false);
@@ -35,9 +35,12 @@ public class Example3 {
         System.out.println("----------------------");
         queue.display();
         System.out.println();
-        System.out.println("Displaying the top element: " + queue.top().key + ", " + queue.top().data);
         System.out.println("Entering new element with key: 15 and value: banana");
         queue.insert(15, "banana");
+        Tree.Node nodeToRemove = queue.findNodeByKey(4);
+        System.out.println("Removing the node with key: "+nodeToRemove.key );
+        queue.tree.root = queue.remove(nodeToRemove);
+        queue.display();
         System.out.println("Entering new element with key: 11 and value: melon");
         queue.insert(11, "melon");
         System.out.println("The size of the priority queue: " + queue.size());
@@ -45,7 +48,10 @@ public class Example3 {
         System.out.println("----------------------");
         queue.display();
         System.out.println();
-        System.out.println("Displaying the top element: " + queue.top().key + ", " + queue.top().data);
+        Tree.Node nodeToRemove1 = queue.findNodeByKey(11);
+        System.out.println("Removing the node with key: "+nodeToRemove1.key );
+        queue.tree.root = queue.remove(nodeToRemove1);
+        queue.display();
         System.out.println("Toggling the state of the PQ");
         queue.toggle();
         System.out.println("The state of the priority queue:" + queue.state());
@@ -54,6 +60,9 @@ public class Example3 {
         System.out.println("----------------------");
         queue.display();
         System.out.println();
-        System.out.println("Displaying the top element: " + queue.top().key + ", " + queue.top().data);
+        Tree.Node nodeToRemove2 = queue.findNodeByKey(2);
+        System.out.println("Removing the node with key: "+nodeToRemove2.key );
+        queue.tree.root = queue.remove(nodeToRemove2);
+        queue.display();
     }
 }
