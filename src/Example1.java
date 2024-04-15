@@ -63,13 +63,13 @@ public class Example1 {
 
         System.out.println();
 
-        removeKeyCall(queue);
+        replaceKeyCall(queue);
         System.out.println();
-        removeValueCall(queue);
+        replaceValueCall(queue);
 
     }
 
-    static private void removeKeyCall(SmarterPQ queue){
+    static private void replaceKeyCall(SmarterPQ queue){
 
         Tree.Node nodeToReplace = queue.findNodeByKey(1);
 
@@ -86,7 +86,7 @@ public class Example1 {
         }
     }
 
-    static private void removeValueCall(SmarterPQ queue){
+    static private void replaceValueCall(SmarterPQ queue){
 
 
         int key = 15;
