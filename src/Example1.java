@@ -43,7 +43,7 @@ public class Example1 {
         System.out.println("The size of the priority queue: " + queue.size());
 
         System.out.println();
-        System.out.println("Displaying the top element: Key: "+ queue.getTop().key +" Value: "+queue.getTop().data);
+        System.out.println("Displaying the top element: Key: "+ queue.top().key +" Value: "+queue.top().data);
 
         System.out.println();
         System.out.println("Is Smart priority Queue Empty ? "+ queue.isEmpty());

@@ -52,8 +52,11 @@ class Tree {
 
         if (extremeVal != node) {
             int temp = node.key;
+            Object tempData = node.data;
             node.key = extremeVal.key;
+            node.data = extremeVal.data;
             extremeVal.key = temp;
+            extremeVal.data = tempData;
             heapify(extremeVal);
         }
     }
@@ -221,7 +224,7 @@ class SmarterPQ {
      * @return the removed element
      */
     Tree.Node removeTop() {
-        Tree.Node curTop = getTop();
+        Tree.Node curTop = top();
         Tree.Node tempNode = new Tree.Node(curTop.key, curTop.data);
 
         Tree.Node toRemove = tree.root;
@@ -297,7 +300,7 @@ class SmarterPQ {
      *
      * @return the top element
      */
-    Tree.Node getTop() {
+    Tree.Node top() {
         return tree.root;
     }
 
